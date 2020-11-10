@@ -1,0 +1,31 @@
+functions:
+  createUser:
+    handler: user.createUser
+    timeout: 10
+    events:
+      - http: 
+          path: user
+          method: post
+          cors: true
+  getUserById:
+    handler: user.getUserById
+    events:
+      - http:
+          path: user/{userId}
+          method: get
+          cors: true
+  updateUser:
+    handler: user.updateUser
+    events:
+      - http:
+          path: user/{userId}
+          method: put
+          cors: true
+  deleteUser:
+    handler: user.deleteUser
+    events:
+      - http:
+          path: user/{userId}
+          method: delete
+          cors: true
+

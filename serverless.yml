@@ -1,0 +1,47 @@
+service: user-service
+frameworkVersion: ">=1.1.0 <2.0.0"
+plugins:
+  - serverless-offline
+provider:
+  name: aws
+  runtime: nodejs10.x
+  profile: rwdvs
+  stage: dev
+  apiKeys:
+    - user_service_${opt:stage}
+  region: us-east-1
+  environment:
+    TABLE: user-table-demo
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "*"
+functions:
+  createUser: ${file(./functions.yml):${'functions.createUser'}}
+  getUserById: ${file(./functions.yml):${'functions.getUserById'}}
+  updateUser: ${file(./functions.yml):${'functions.updateUser'}}
+  deleteUser: ${file(./functions.yml):${'functions.deleteUser'}}
+resources:
+  Resources:
+    userTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: "userId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "userId"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: "NEW_AND_OLD_IMAGES"
+        TableName: ${self:provider.environment.TABLE}

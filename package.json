@@ -1,0 +1,17 @@
+{
+  "name": "user-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "user.js",
+  "scripts": {
+    "deploy": "sls deploy --stage dev"
+  },
+  "author": "Dmitry Grinko",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.787.0",
+    "bluebird": "^3.7.2",
+    "serverless-offline": "^6.8.0",
+    "uuidv4": "^6.2.5"
+  }
+}
